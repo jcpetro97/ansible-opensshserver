@@ -1,0 +1,15 @@
+---
+- name: Install Packages and Prereqs for openssh server 
+  package:
+    name: openssh-server
+    state: present
+
+- name: Build sshd_config and put it in /etc/ssh
+  template:
+    src:  sshd_config.j2
+    dest: /etc/ssh/sshd_config
+    owner:  root
+    group:  root
+    backup: yes
+    mode: 0644
+  notify: RestartSshd

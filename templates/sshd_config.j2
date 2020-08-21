@@ -1,0 +1,185 @@
+#	$OpenBSD: sshd_config,v 1.101 2017/03/14 07:19:07 djm Exp $
+
+# This is the sshd server system-wide configuration file.  See
+# sshd_config(5) for more information.
+
+# This sshd was compiled with PATH=/usr/bin:/bin:/usr/sbin:/sbin
+
+# The strategy used for options in the default sshd_config shipped with
+# OpenSSH is to specify options with their default value where
+# possible, but leave them commented.  Uncommented options override the
+# default value.
+
+{% if hostvars[inventory_hostname].SshServerPort is defined %}
+{% for OpenSshServerPort in hostvars[inventory_hostname].SshServerPort  %}
+Port {{OpenSshServerPort}}
+{% endfor %}
+{% else %}
+{% for OpenSshServerPort in SshServerPort  %}
+Port {{OpenSshServerPort}}
+{% endfor %}
+{% endif %}
+
+#AddressFamily any
+#ListenAddress 0.0.0.0
+#ListenAddress ::
+{% if hostvars[inventory_hostname].SshProtocol is defined %}
+Protocol hostvars[inventory_hostname].SshProtocol
+{% else %}
+Protocol {{SshProtocol}}
+{% endif %}
+# HostKeys for protocol version 2
+{% if hostvars[inventory_hostname].SshHostKeys is defined %}
+{% for OpenSshHostKeys in hostvars[inventory_hostname].SshHostKeys  %}
+HostKey {{OpenSshHostKeys}}
+{% endfor %}
+{% else %}
+{% for OpenSshHostKeys in SshHostKeys  %}
+HostKey {{OpenSshHostKeys}}
+{% endfor %}
+{% endif %}
+
+# Ciphers and keying
+#RekeyLimit default none
+
+# Logging
+{% if hostvars[inventory_hostname].SshSyslogFacility is defined %}
+SyslogFacility hostvars[inventory_hostname].SshSyslogFacility
+{% else %}
+SyslogFacility {{SshSyslogFacility}}
+{% endif %}
+{% if hostvars[inventory_hostname].SshLogLevel is defined %}
+LogLevel hostvars[inventory_hostname].SshLogLevel
+{% else %}
+LogLevel {{SshLogLevel}}
+{% endif %}
+
+# Authentication:
+{% if hostvars[inventory_hostname].SshLoginGraceTime is defined %}
+LoginGraceTime hostvars[inventory_hostname].SshLoginGraceTime
+{% else %}
+LoginGraceTime {{SshLoginGraceTime}}
+{% endif %}
+{% if hostvars[inventory_hostname].SshPermitRootLogin is defined %}
+PermitRootLogin hostvars[inventory_hostname].SshPermitRootLogin
+{% else %}
+PermitRootLogin {{SshPermitRootLogin}}
+{% endif %}
+{% if hostvars[inventory_hostname].SshStrictModes is defined %}
+StrictModes hostvars[inventory_hostname].SshStrictModes
+{% else %}
+StrictModes {{SshStrictModes}}
+{% endif %}
+{% if hostvars[inventory_hostname].SshPubkeyAuthentication is defined %}
+PubkeyAuthentication hostvars[inventory_hostname].SshPubkeyAuthentication
+{% else %}
+PubkeyAuthentication {{SshPubkeyAuthentication}}
+{% endif %}
+
+# Don't read the user's ~/.rhosts and ~/.shosts files
+{% if hostvars[inventory_hostname].SshIgnoreRhosts is defined %}
+IgnoreRhosts hostvars[inventory_hostname].SshIgnoreRhosts
+{% else %}
+IgnoreRhosts {{SshIgnoreRhosts}}
+{% endif %}
+{% if hostvars[inventory_hostname].SshHostbasedAuthentication is defined %}
+HostbasedAuthentication hostvars[inventory_hostname].SshHostbasedAuthentication
+{% else %}
+HostbasedAuthentication {{SshHostbasedAuthentication}}
+{% endif %}
+# Uncomment if you don't trust ~/.ssh/known_hosts for RhostsRSAAuthentication
+#IgnoreUserKnownHosts yes
+# To enable empty passwords, change to yes (NOT RECOMMENDED)
+{% if hostvars[inventory_hostname].SshPermitEmptyPasswords is defined %}
+PermitEmptyPasswords hostvars[inventory_hostname].SshPermitEmptyPasswords
+{% else %}
+PermitEmptyPasswords {{SshPermitEmptyPasswords}}
+{% endif %}
+
+# Change to yes to enable challenge-response passwords (beware issues with
+# some PAM modules and threads)
+{% if hostvars[inventory_hostname].SshChallengeResponseAuthentication is defined %}
+ChallengeResponseAuthentication hostvars[inventory_hostname].SshChallengeResponseAuthentication
+{% else %}
+ChallengeResponseAuthentication {{SshChallengeResponseAuthentication}}
+{% endif %}
+
+# Kerberos options
+#KerberosAuthentication no
+#KerberosOrLocalPasswd yes
+#KerberosTicketCleanup yes
+#KerberosGetAFSToken no
+
+# GSSAPI options
+#GSSAPIAuthentication no
+#GSSAPICleanupCredentials yes
+#GSSAPIStrictAcceptorCheck yes
+#GSSAPIKeyExchange no
+
+{% if hostvars[inventory_hostname].SshX11Forwarding is defined %}
+X11Forwarding hostvars[inventory_hostname].SshX11Forwarding
+{% else %}
+X11Forwarding {{SshX11Forwarding}}
+{% endif %}
+{% if hostvars[inventory_hostname].SshX11DisplayOffset is defined %}
+X11DisplayOffset hostvars[inventory_hostname].SshX11DisplayOffset
+{% else %}
+X11DisplayOffset {{SshX11DisplayOffset}}
+{% endif %}
+{% if hostvars[inventory_hostname].SshPrintMotd is defined %}
+PrintMotd hostvars[inventory_hostname].SshPrintMotd
+{% else %}
+PrintMotd {{SshPrintMotd}}
+{% endif %}
+{% if hostvars[inventory_hostname].SshPrintLastLog is defined %}
+PrintLastLog hostvars[inventory_hostname].SshPrintMotd
+{% else %}
+PrintLastLog {{SshPrintLastLog}}
+{% endif %}
+{% if hostvars[inventory_hostname].SshTCPKeepAlive is defined %}
+TCPKeepAlive hostvars[inventory_hostname].SshTCPKeepAlive
+{% else %}
+TCPKeepAlive {{SshTCPKeepAlive}}
+{% endif %}
+
+# Allow client to pass locale environment variables
+AcceptEnv LANG LC_*
+
+# override default of no subsystems
+Subsystem	sftp	/usr/lib/openssh/sftp-server
+
+
+
+# Set this to 'yes' to enable PAM authentication, account processing,
+# and session processing. If this is enabled, PAM authentication will
+# be allowed through the ChallengeResponseAuthentication and
+# PasswordAuthentication.  Depending on your PAM configuration,
+# PAM authentication via ChallengeResponseAuthentication may bypass
+# the setting of "PermitRootLogin without-password".
+# If you just want the PAM account and session checks to run without
+# PAM authentication, then enable this but set PasswordAuthentication
+# and ChallengeResponseAuthentication to 'no'.
+{% if hostvars[inventory_hostname].SshUsePAM is defined %}
+UsePAM hostvars[inventory_hostname].SshUsePAM
+{% else %}
+UsePAM {{SshUsePAM}}
+{% endif %}
+{% if SshMatchRules is defined and SshMatchRules|length  %}
+{% for entry in SshMatchRules %}
+{% if entry.Match is defined %}
+Match {{entry.Match}}
+{{ entry.Options | indent(3,true) }}
+{% endif %}
+{% endfor %}
+{%else%}
+AuthorizedKeysFile   %h/.ssh/authorized_keys
+{% endif %}
+#
+{% if hostvars[inventory_hostname].HostSshMatchRules is defined and hostvars[inventory_hostname].HostSshMatchRules|length %}
+{% for Hentry in hostvars[inventory_hostname].HostSshMatchRules  %}
+{% if Hentry.Match and Hentry.Options %}
+Match {{ Hentry.Match }}
+{{ Hentry.Options | indent(3,true) }}
+{% endif %}
+{% endfor %}
+{% endif %}

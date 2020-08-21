@@ -1,0 +1,29 @@
+---
+SshServerPort:
+  - 22
+SshProtocol: "2"
+SshHostKeys:
+  - "/etc/ssh/ssh_host_rsa_key"
+  - "/etc/ssh/ssh_host_dsa_key"
+  - "/etc/ssh/ssh_host_ecdsa_key"
+  - "/etc/ssh/ssh_host_ed25519_key"
+SshSyslogFacility: "AUTH"
+SshLogLevel: "INFO"
+SshLoginGraceTime: 120
+SshPermitRootLogin: "prohibit-password"
+SshStrictModes: "yes"
+SshPubkeyAuthentication: "yes"
+SshIgnoreRhosts: "yes"
+SshHostbasedAuthentication: "no"
+SshPermitEmptyPasswords: "no"
+SshChallengeResponseAuthentication: "no"
+SshX11Forwarding: "yes"
+SshX11DisplayOffset: "10"
+SshPrintMotd: "no"
+SshPrintLastLog: "yes"
+SshTCPKeepAlive: "yes"
+SshAllowTcpForwarding: "no"
+SshPermitTunnel: "no"
+SshUsePAM: "yes"
+SshMatchRules: []
+
