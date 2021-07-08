@@ -95,6 +95,11 @@ PermitEmptyPasswords hostvars[inventory_hostname].SshPermitEmptyPasswords
 {% else %}
 PermitEmptyPasswords {{SshPermitEmptyPasswords}}
 {% endif %}
+{% if hostvars[inventory_hostname].SshPasswordAuthentication is defined %}
+PasswordAuthentication hostvars[inventory_hostname].SshPasswordAuthentication
+{% else %}
+PasswordAuthentication {{SshPasswordAuthentication}}
+{% endif %}
 
 # Change to yes to enable challenge-response passwords (beware issues with
 # some PAM modules and threads)
