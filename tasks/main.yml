@@ -1,11 +1,16 @@
 ---
 - name: Install Packages and Prereqs for openssh server 
-  package:
+  ansible.builtin.package:
     name: openssh-server
     state: present
 
+- name: Ubuntu - check if /etc/ssh/sshd_config.d exists
+  ansible.builtin.stat:
+    path: /etc/ssh/sshd_config.d
+  register: sshdconfigd_dir
+
 - name: Build sshd_config and put it in /etc/ssh
-  template:
+  ansible.builtin.template:
     src:  sshd_config.j2
     dest: /etc/ssh/sshd_config
     owner:  root
@@ -13,3 +18,29 @@
     backup: yes
     mode: 0644
   notify: RestartSshd
+
+- name: Ubuntu - Add sshd options for passwordless authentication to  /etc/ssh/sshd_config.d/02-pubkeys.conf
+  ansible.builtin.copy:
+    src: files/pubkeys.conf
+    dest: /etc/ssh/sshd_config.d/02-pubkeys.conf
+    owner: root
+    group: root
+    mode: 0444
+  register: sshd_pubkey
+  when: (sshdconfigd_dir.stat.exists) and (SshPubKeys | default('no') == 'yes') 
+
+- name: Add Custom Match rules to /etc/ssh/sshd_config.d
+  ansible.builtin.template:
+    src: Match_Rules.j2
+    dest: /etc/ssh/sshd_config.d/09-MatchRules.conf
+    owner: root
+    group: root
+    mode: 0444
+  when: SshMatchRules|length > 0
+  notify: RestartSshd
+
+- name: Remove Custom Match rules from /etc/ssh/sshd_config.d
+  ansible.builtin.file:
+    path: /etc/ssh/sshd_config.d/09-MatchRules.conf
+    state: absent
+  when: not SshMatchRules|length > 0
