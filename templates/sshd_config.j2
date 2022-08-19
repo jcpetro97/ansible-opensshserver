@@ -10,7 +10,10 @@
 # possible, but leave them commented.  Uncommented options override the
 # default value.
 
-Port {{SshServerPort}}
+{% for entry in SshServerPort  %}
+Port {{entry}}
+{% endfor %}
+
 
 #AddressFamily any
 #ListenAddress 0.0.0.0
@@ -18,7 +21,9 @@ Port {{SshServerPort}}
 Protocol {{SshProtocol}}
 
 # HostKeys for protocol version 2
-HostKey {{SshHostKeys}}
+{% for entry in SshHostKeys  %}
+HostKey {{entry}}
+{% endfor %}
 
 # Ciphers and keying
 #RekeyLimit default none
