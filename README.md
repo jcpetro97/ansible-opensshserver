@@ -35,7 +35,7 @@ Role to install and configure the openssh server.
 
 #### Example Playbook Execution
 
-**NOTE:** _The following example is the role being called without any extra rules_
+_This is how to call the role without extra rules_
 
 ```
 - hosts: all
@@ -47,7 +47,7 @@ Role to install and configure the openssh server.
 
 
 
-**NOTE:** _The following example is the role being called from a playbook, and adding extra rules that are defined when the role is called at execution time_
+_This is how to call the role with variables defined inside the playbook_
 
 ```
 - hosts: all
@@ -63,8 +63,8 @@ Role to install and configure the openssh server.
                  ForceCommand cvs server
 
 ```
-**NOTE:** _The following example shows how to have multiple Match Rules as part of the playbook._
 
+_This is how to call the role with multiple values for the SshMatchRules variable defined inside the playbook_
 
 ```
 - hosts: all
