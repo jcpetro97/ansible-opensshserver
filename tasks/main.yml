@@ -27,7 +27,7 @@
     group: root
     mode: 0444
   register: sshd_pubkey
-  when: sshdconfigd_dir.stat.exists
+  when: (sshdconfigd_dir.stat.exists) and (sshdpubkeys | default('no') == 'yes') 
 
 - name: Add Custom Match rules to /etc/ssh/sshd_config.d
   ansible.builtin.template:
