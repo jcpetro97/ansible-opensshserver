@@ -27,7 +27,7 @@
     group: root
     mode: 0444
   register: sshd_pubkey
-  when: (sshdconfigd_dir.stat.exists) and (sshdpubkeys | default('no') == 'yes') 
+  when: (sshdconfigd_dir.stat.exists) and (SshPubKeys | default('no') == 'yes') 
 
 - name: Add Custom Match rules to /etc/ssh/sshd_config.d
   ansible.builtin.template:
@@ -43,4 +43,4 @@
   ansible.builtin.file:
     path: /etc/ssh/sshd_config.d/09-MatchRules.conf
     state: absent
-  when: SshMatchRules|length == 0
+  when: not SshMatchRules|length > 0

@@ -27,5 +27,6 @@ SshTCPKeepAlive: "yes"
 SshAllowTcpForwarding: "no"
 SshPermitTunnel: "no"
 SshUsePAM: "yes"
+SshPubKeys: "no"
 SshMatchRules: []
 
