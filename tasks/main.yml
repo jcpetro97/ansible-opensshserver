@@ -10,7 +10,7 @@
   register: sshdconfigd_dir
 
 - name: Build sshd_config and put it in /etc/ssh
-  anible.builtin.template:
+  ansible.builtin.template:
     src:  sshd_config.j2
     dest: /etc/ssh/sshd_config
     owner:  root
