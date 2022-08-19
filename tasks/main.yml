@@ -15,12 +15,12 @@
 #   notify: RestartSshd
 
 - name: Add Custom Match rules to /etc/ssh/sshd_config.d
-    ansible.builtin.template:
-      src: Match_Rules.j2
-      dest: /etc/ssh/sshd_config.d/09-MatchRules.conf
-      owner: root
-      group: root
-      mode: 0444
+  ansible.builtin.template:
+    src: Match_Rules.j2
+    dest: /etc/ssh/sshd_config.d/09-MatchRules.conf
+    owner: root
+    group: root
+    mode: 0444
   when: SshMatchRules|length > 0
 # - name: is defined
   # debug:
