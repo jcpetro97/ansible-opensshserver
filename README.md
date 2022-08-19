@@ -5,6 +5,7 @@ Role to install and configure the openssh server.
 #### Variables
 
 | Parameter | Choices / **Defaults** | Comments |
+|-----------|------------------------|----------|
 |SshServerPort|**22**| Port the ssh server is running on|
 |SshProtocol|**2**| ssh protocol version|
 |SshHostKeys| _See defaults/main file for default host keys| Host Keys for ssh server| 
